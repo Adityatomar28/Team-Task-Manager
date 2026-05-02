@@ -20,14 +20,7 @@ TeamSync helps teams organize projects, assign tasks, manage members, track prog
 ---
 
 ## ✨ Features
-
-<img width="1453" height="798" alt="Screenshot 2026-05-03 at 2 31 18 AM" src="https://github.com/user-attachments/assets/af9f65ca-d710-4c8b-9196-9253dec965a1" />
-<img width="1464" height="785" alt="Screenshot 2026-05-03 at 2 41 32 AM" src="https://github.com/user-attachments/assets/f538ca77-a158-44e9-a4c2-f02804385290" />
-<img width="1466" height="795" alt="Screenshot 2026-05-03 at 2 43 53 AM" src="https://github.com/user-attachments/assets/7026466e-081a-4aaf-8219-9fadab348db9" />
-<img width="1446" height="791" alt="Screenshot 2026-05-03 at 2 44 01 AM" src="https://github.com/user-attachments/assets/1981d810-050e-4eb6-b3ef-9244275f7630" />
-<img width="1465" height="793" alt="Screenshot 2026-05-03 at 2 44 10 AM" src="https://github.com/user-attachments/assets/812a3318-1034-4858-ac3e-ebff54001af3" />
-<img width="1470" height="792" alt="Screenshot 2026-05-03 at 2 49 24 AM" src="https://github.com/user-attachments/assets/6ddf6900-018f-4521-b4e1-6195a065681d" />
-<img width="1470" height="797" alt="Screenshot 2026-05-03 at 2 48 57 AM" src="https://github.com/user-attachments/assets/ade1cae8-a9c2-4a89-9186-9739ec6d5a45" />
+<img width="1920" height="1080" alt="photo-collage png" src="https://github.com/user-attachments/assets/146bfd03-37b7-4366-beb7-b343fb3bbab8" />
 
 
 
