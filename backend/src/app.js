@@ -3,14 +3,6 @@ const cors = require("cors");
 const { errorHandler, notFoundHandler } = require("./middlewares/error.middleware");
 
 const app = express();
-const apiLoadError = (() => {
-  try {
-    app.locals.routes = require("./routes");
-    return null;
-  } catch (error) {
-    return error;
-  }
-})();
 
 app.use(
   cors({
@@ -27,7 +19,6 @@ app.get("/health", (req, res) => {
   return res.status(200).json({
     success: true,
     message: "TeamSync backend is running",
-    api: apiLoadError ? "unavailable" : "ready",
   });
 });
 
@@ -40,18 +31,33 @@ app.get("/", (req, res) => {
   });
 });
 
-if (apiLoadError) {
-  console.error("API failed to initialize:", apiLoadError);
-  app.use("/api", (req, res) => {
+app.get("/favicon.ico", (req, res) => {
+  return res.status(204).end();
+});
+
+let routes;
+let apiLoadError;
+
+app.use("/api", (req, res, next) => {
+  if (!routes && !apiLoadError) {
+    try {
+      routes = require("./routes");
+    } catch (error) {
+      apiLoadError = error;
+      console.error("API failed to initialize:", error);
+    }
+  }
+
+  if (apiLoadError) {
     return res.status(503).json({
       success: false,
       message:
         "API is unavailable because the server configuration is incomplete. Check DATABASE_URL and other Railway variables.",
     });
-  });
-} else {
-  app.use("/api", app.locals.routes);
-}
+  }
+
+  return routes(req, res, next);
+});
 
 app.use(notFoundHandler);
 app.use(errorHandler);
