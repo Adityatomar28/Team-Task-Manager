@@ -2,16 +2,34 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #f8fafc;
+  --color-bg: #f6f7fb;
   --color-surface: #ffffff;
-  --color-surface-muted: #f1f5f9;
+  --color-surface-muted: #f4f6fb;
   --color-border: #e2e8f0;
   --color-text: #0f172a;
   --color-text-muted: #64748b;
-  --color-primary: #4f46e5;
-  --color-primary-strong: #4338ca;
+  --color-primary: #6366f1;
+  --color-primary-strong: #7c3aed;
   --shadow-card: 0 4px 14px rgba(15, 23, 42, 0.06);
-  --shadow-card-hover: 0 12px 24px rgba(15, 23, 42, 0.12);
+  --shadow-card-hover: 0 18px 42px rgba(79, 70, 229, 0.18);
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+  --color-bg: #080b14;
+  --color-surface: #0f172a;
+  --color-surface-muted: #111827;
+  --color-border: #243044;
+  --color-text: #f8fafc;
+  --color-text-muted: #94a3b8;
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.2);
+  --shadow-card-hover: 0 20px 55px rgba(99, 102, 241, 0.22);
 }
 
 body {
@@ -25,4 +43,36 @@ body {
 
 * {
   @apply border-border;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  letter-spacing: 0;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+}
+
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: #0f172a !important;
+  color: #f8fafc;
+  border-color: #334155;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #94a3b8;
+  opacity: 1;
 }

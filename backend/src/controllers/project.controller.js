@@ -143,7 +143,7 @@ async function addProjectMember(req, res, next) {
       });
     }
 
-    const user = await prisma.user.findFirst({
+    let user = await prisma.user.findFirst({
       where: {
         OR: [
           ...(userId ? [{ id: userId }] : []),
@@ -156,6 +156,23 @@ async function addProjectMember(req, res, next) {
         email: true,
       },
     });
+
+    if (!user && email) {
+      const fallbackName = email.toLowerCase().split("@")[0];
+      user = await prisma.user.create({
+        data: {
+          email: email.toLowerCase(),
+          name: fallbackName,
+          // Placeholder for invite-first flow; user can later signup with Clerk/local auth.
+          password: "__INVITED_MEMBER__",
+        },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      });
+    }
 
     if (!user) {
       return res.status(404).json({
@@ -266,10 +283,76 @@ async function updateProjectMemberRole(req, res, next) {
   }
 }
 
+async function deleteProject(req, res, next) {
+  try {
+    const { projectId } = req.params;
+
+    await prisma.project.delete({
+      where: { id: projectId },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Project deleted",
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+async function removeProjectMember(req, res, next) {
+  try {
+    const { projectId, memberId } = req.params;
+
+    const membership = await prisma.projectMember.findFirst({
+      where: {
+        id: memberId,
+        projectId,
+      },
+      select: {
+        id: true,
+        userId: true,
+      },
+    });
+
+    if (!membership) {
+      return res.status(404).json({
+        success: false,
+        message: "Project member not found",
+      });
+    }
+
+    const project = await prisma.project.findUnique({
+      where: { id: projectId },
+      select: { ownerId: true },
+    });
+
+    if (project?.ownerId === membership.userId) {
+      return res.status(400).json({
+        success: false,
+        message: "Project owner cannot be removed. Delete the project instead.",
+      });
+    }
+
+    await prisma.projectMember.delete({
+      where: { id: memberId },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Project member removed",
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
 module.exports = {
   createProject,
   listProjects,
   getProjectDetails,
   addProjectMember,
   updateProjectMemberRole,
+  deleteProject,
+  removeProjectMember,
 };
