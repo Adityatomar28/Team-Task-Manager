@@ -56,6 +56,8 @@ TeamSync helps teams organize projects, assign tasks, manage members, track prog
 - Sidebar navigation with clean, modern design
 
 ---
+DATABASE SCHEMA
+<img width="1030" height="671" alt="Screenshot 2026-05-03 at 2 21 18 AM" src="https://github.com/user-attachments/assets/9ecf3f15-648f-4168-9d1a-58810acf0c74" />
 
 ## 🛠️ Tech Stack
 
@@ -138,10 +140,6 @@ teamsync/
 ├── .env.example
 └── README.md
 ```
-DATABASE SCHEMA
-<img width="1030" height="671" alt="Screenshot 2026-05-03 at 2 21 18 AM" src="https://github.com/user-attachments/assets/9ecf3f15-648f-4168-9d1a-58810acf0c74" />
-
-
 ---
 
 ## 🚀 Getting Started
