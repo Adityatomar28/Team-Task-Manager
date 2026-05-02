@@ -17,6 +17,10 @@ app.use(
     origin: "*",
   })
 );
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.originalUrl}`);
+  next();
+});
 app.use(express.json());
 
 app.get("/health", (req, res) => {
