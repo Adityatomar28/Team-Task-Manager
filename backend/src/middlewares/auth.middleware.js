@@ -177,10 +177,18 @@ async function requireAuth(req, res, next) {
       try {
         user = await findOrCreateUserByClerkToken(token);
       } catch (clerkError) {
+        console.error("Clerk token verification failed:", clerkError);
         if (clerkError?.code === "CLERK_CONFIG_MISSING") {
           return res.status(500).json({
             success: false,
             message: "Server auth is not configured. Set CLERK_SECRET_KEY in backend .env",
+          });
+        }
+        if (process.env.NODE_ENV === "production") {
+          return res.status(401).json({
+            success: false,
+            message:
+              "Clerk authentication failed. Check that backend CLERK_SECRET_KEY matches the frontend VITE_CLERK_PUBLISHABLE_KEY.",
           });
         }
         user = null;
