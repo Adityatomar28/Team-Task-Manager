@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon backend/src/server.js",
     "build": "cd backend && prisma generate",
-    "start": "node backend/src/server.js",
+    "start": "npm run prisma:migrate && node backend/src/server.js",
     "prisma:generate": "cd backend && prisma generate",
     "prisma:migrate": "cd backend && prisma migrate deploy"
   },
