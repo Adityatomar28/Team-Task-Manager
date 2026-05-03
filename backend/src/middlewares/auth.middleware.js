@@ -32,15 +32,17 @@ async function findUserByLocalJwt(token) {
 }
 
 async function findOrCreateUserByClerkToken(token) {
-  const secretKey = process.env.CLERK_SECRET_KEY;
+  const secretKey = process.env.CLERK_SECRET_KEY?.trim();
+  const publishableKey = (process.env.VITE_CLERK_PUBLISHABLE_KEY || process.env.CLERK_PUBLISHABLE_KEY || "").trim();
+
   if (!secretKey || secretKey === "YOUR_CLERK_SECRET_KEY") {
     const error = new Error("CLERK_SECRET_KEY is missing or not configured");
     error.code = "CLERK_CONFIG_MISSING";
     throw error;
   }
 
-  const clerkClient = createClerkClient({ secretKey });
-  const tokenPayload = await verifyToken(token, { secretKey });
+  const clerkClient = createClerkClient({ secretKey, ...(publishableKey ? { publishableKey } : {}) });
+  const tokenPayload = await verifyToken(token, { secretKey, ...(publishableKey ? { publishableKey } : {}) });
   if (!tokenPayload?.sub) return null;
 
   const clerkUserId = tokenPayload.sub;
@@ -188,7 +190,7 @@ async function requireAuth(req, res, next) {
           return res.status(401).json({
             success: false,
             message:
-              "Clerk authentication failed. Check that backend CLERK_SECRET_KEY matches the frontend VITE_CLERK_PUBLISHABLE_KEY.",
+              `Clerk authentication failed: ${clerkError.message || "Invalid token signature"}. Check that backend CLERK_SECRET_KEY matches the frontend VITE_CLERK_PUBLISHABLE_KEY.`,
           });
         }
         user = null;
